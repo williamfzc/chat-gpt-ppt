@@ -28,6 +28,10 @@ And you get a slice:
 
 ![](./example/sample.png)
 
+And multi languages:
+
+![](./example/sample-chi.png)
+
 ## Usage
 
 ### Install lib
