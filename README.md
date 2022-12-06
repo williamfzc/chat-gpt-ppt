@@ -2,6 +2,8 @@
 
 use ChatGPT to generate PPT automatically
 
+> [2022-12-06] Currently ChatGPT has no official API. I am waiting for it to make this repo a real production.
+
 ## Show case
 
 Some topics for presentation named `topics.txt`:
