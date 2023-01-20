@@ -1,7 +1,7 @@
 import subprocess
 import tempfile
 
-from revChatGPT.revChatGPT import Chatbot
+from revChatGPT.ChatGPT import Chatbot
 from loguru import logger
 import fire
 
