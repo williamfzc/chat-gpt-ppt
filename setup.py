@@ -18,7 +18,7 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "revChatGPT==0.0.13",
+        "revChatGPT==0.2.1",
         "fire",
         "loguru",
     ],

@@ -1,27 +1,32 @@
 import subprocess
 import tempfile
 
-from revChatGPT.revChatGPT import Chatbot
+from revChatGPT.ChatGPT import Chatbot
 from loguru import logger
 import fire
 
 
 class Bot(object):
     def __init__(self, config: dict):
-        chatbot = Chatbot(config, conversation_id=None)
+        chatbot = Chatbot(config)
         chatbot.reset_chat()
         chatbot.refresh_session()
         self._bot = chatbot
+        self._conversation_id = None
         logger.info("chatbot ready")
 
     def get_resp(self, req: str) -> str:
-        resp = self._bot.get_chat_response(req)
+        resp = self._bot.ask(req, conversation_id=self._conversation_id)
+        # update
+        self._conversation_id = resp["conversation_id"]
         return resp["message"]
 
+    def reset(self):
+        self._conversation_id = None
 
-def new_bot(session_token: str, auth: str = "") -> Bot:
+
+def new_bot(session_token: str) -> Bot:
     config = {
-        "Authorization": auth,
         "session_token": session_token,
     }
 
