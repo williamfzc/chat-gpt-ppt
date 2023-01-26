@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="chat-gpt-ppt",
-    version="0.1.1",
+    version="0.2.0",
     description="use ChatGPT to generate PPT automatically",
     author="williamfzc",
     author_email="williamfzc@foxmail.com",
