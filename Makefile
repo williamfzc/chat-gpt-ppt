@@ -21,6 +21,7 @@ build_windows:
 	rm ./assets/marp-cli.zip
 	GOOS=windows GOARCH=amd64 ${GOCMD} build -o cgp_windows ./cmd/cgp
 	zip cgp_windows.zip cgp_windows
+	rm ./assets/marp.exe
 
 build_macos:
 	wget https://github.com/marp-team/marp-cli/releases/download/${MARP_VER}/marp-cli-${MARP_VER}-mac.tar.gz -O ./assets/marp-cli.tar.gz
@@ -29,7 +30,6 @@ build_macos:
 	chmod +x ./assets/marp
 	GOOS=darwin GOARCH=amd64 ${GOCMD} build -o cgp_macos ./cmd/cgp
 	zip cgp_macos.zip cgp_macos
-	rm ./assets/marp-cli.tar.gz
 	rm ./assets/marp
 
 test:
