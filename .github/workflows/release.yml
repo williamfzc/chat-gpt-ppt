@@ -19,8 +19,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
       - name: Build
-        run: make
+        run: |
+          make build_linux
+          make build_windows
+          make build_macos
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: cgp
+          files: |
+            cgp_linux.zip
+            cgp_windows.zip
+            cgp_macos.zip
