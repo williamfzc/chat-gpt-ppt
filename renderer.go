@@ -49,7 +49,7 @@ func (m *MarpRenderer) RenderFile(outputPath string) error {
 	final := strings.Join(parts, "\n---\n")
 
 	// call marp
-	file, err := os.CreateTemp("dir", "cgp*.md")
+	file, err := os.CreateTemp(os.TempDir(), "cgp*.md")
 	if err != nil {
 		return err
 	}
