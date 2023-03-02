@@ -2,11 +2,15 @@
 
 use ChatGPT to generate PPT automatically
 
+## Changelog
+
+> [2023-03-02] Rewrite with golang. All in one file.
+>
 > [2023-01-13] https://github.com/williamfzc/chat-gpt-ppt/issues/2 OpenAI's services are not available in my country.
 >
-> [2022-12-06] Currently ChatGPT has no official API. I am waiting for it to make this repo a real production.
+> [2022-12-06] Currently, ChatGPT has no official API. I am waiting for it to make this repo a real production.
 
-## Show case
+## Showcase
 
 Some topics for presentation named `topics.txt`:
 
@@ -19,50 +23,24 @@ what is the future of OpenAI?
 Easily generate a simple ppt in seconds:
 
 ```
-cgp token.txt topics.txt
+./cgp token.txt topics.txt output.ppt
 ```
 
-And you get a slice:
-
-```
-[  INFO ] Converting 1 markdown...
-[  INFO ] C:\Users\ADMINI~1\AppData\Local\Temp\tmpt202812s => output.html
-2022-12-05 16:08:24.154 | INFO     | cgp:main:82 - result saved to output.html
-```
+And you get one:
 
 ![](./example/sample.png)
 
-And multi languages:
+With multi languages support:
 
 ![](./example/sample-chi.png)
 
 ## Usage
 
-### Install lib
-
-```python
-pip3 install chat_gpt_ppt
-```
-
-### Get your session token
-
-https://github.com/acheong08/ChatGPT#get-your-session-token
-
-### Install marp
-
-Currently we use [marp](https://github.com/marp-team/marp-cli/releases/tag/v2.2.2) as our ppt renderer.
-You can easily download it via the link above.
-
-### Run
-
-```
-cgp token.txt data.txt --marp_exe /your/marp/exe/path
-```
+TODO
 
 ## Contribution
 
-This is a toy project.
-Feel free to hack. Only < 100 lines python code.
+Feel free to send us PR/issues.
 
 ## License
 
