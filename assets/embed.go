@@ -1,6 +1,6 @@
 package assets
 
-import "embed"
+import _ "embed"
 
-//go:embed *
-var Static embed.FS
+//go:embed marp
+var Static []byte

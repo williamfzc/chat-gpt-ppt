@@ -23,6 +23,7 @@ func (t *Topic) ToMarkdown() string {
 type Renderer interface {
 	AddTopic(*Topic)
 	RenderFile(outputPath string) error
+	SetBinPath(path string)
 }
 
 type MarpRenderer struct {
@@ -32,9 +33,13 @@ type MarpRenderer struct {
 
 func NewMarpRenderer() Renderer {
 	return &MarpRenderer{
-		BinPath: "./assets/marp",
+		BinPath: "",
 		Topics:  make([]*Topic, 0),
 	}
+}
+
+func (m *MarpRenderer) SetBinPath(path string) {
+	m.BinPath = path
 }
 
 func (m *MarpRenderer) AddTopic(topic *Topic) {
