@@ -12,7 +12,7 @@ use ChatGPT to generate PPT automatically
 
 ## Showcase
 
-Some topics for presentation named `topics.txt`:
+1. Some topics for presentation named `topic.txt`:
 
 ```
 what's OpenAI?
@@ -20,19 +20,20 @@ how OpenAI works?
 what is the future of OpenAI?
 ```
 
-Easily generate a simple ppt in seconds:
+2. Save your openapi token to `token.txt`.
+3. Generate a ppt in seconds:
 
 ```
-./cgp token.txt topics.txt output.ppt
+./cgp
 ```
 
 And you get one:
 
-![](./example/sample.png)
+![](./doc/sample.png)
 
 With multi languages support:
 
-![](./example/sample-chi.png)
+![](./doc/sample-chi.png)
 
 ## Usage
 
