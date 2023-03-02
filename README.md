@@ -8,9 +8,9 @@ use ChatGPT to generate PPT automatically
 >
 > [2023-01-13] https://github.com/williamfzc/chat-gpt-ppt/issues/2 OpenAI's services are not available in my country.
 >
-> [2022-12-06] Currently ChatGPT has no official API. I am waiting for it to make this repo a real production.
+> [2022-12-06] Currently, ChatGPT has no official API. I am waiting for it to make this repo a real production.
 
-## Show case
+## Showcase
 
 Some topics for presentation named `topics.txt`:
 
