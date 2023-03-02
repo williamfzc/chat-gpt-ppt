@@ -16,16 +16,19 @@ func NewClient(token string) *Client {
 	}
 }
 
-func (c *Client) AskTopic(topic string) (*gogpt.CompletionResponse, error) {
+func (c *Client) AskTopic(topic string) (*gogpt.ChatCompletionResponse, error) {
 	gptClient := gogpt.NewClient(c.token)
 	ctx := context.Background()
 
-	req := gogpt.CompletionRequest{
-		Model:     gogpt.GPT3Dot5Turbo,
-		MaxTokens: 5,
-		Prompt:    topic,
-	}
-	resp, err := gptClient.CreateCompletion(ctx, req)
+	resp, err := gptClient.CreateChatCompletion(ctx, gogpt.ChatCompletionRequest{
+		Model: gogpt.GPT3Dot5Turbo,
+		Messages: []gogpt.ChatCompletionMessage{
+			{
+				Role:    "user",
+				Content: topic,
+			},
+		},
+	})
 	if err != nil {
 		return nil, err
 	}

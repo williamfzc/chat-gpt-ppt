@@ -28,7 +28,7 @@ func main() {
 		panicIfErr(err)
 		topics = append(topics, &cgp.Topic{
 			Title:   eachTopic,
-			Content: resp.Choices[0].Text,
+			Content: resp.Choices[0].Message.Content,
 		})
 	}
 
