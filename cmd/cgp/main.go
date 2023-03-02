@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"os"
 	"strings"
 
@@ -12,7 +13,7 @@ import (
 func main() {
 	tokenFile := flag.String("token", "./token.txt", "token file path")
 	topicFile := flag.String("topic", "./topic.txt", "topic file path")
-	outputFile := flag.String("output", "./output.ppt", "out path")
+	outputFile := flag.String("output", "./output.html", "out path")
 	flag.Parse()
 
 	tokenBytes, err := os.ReadFile(*tokenFile)
@@ -20,6 +21,8 @@ func main() {
 	topicContents, err := os.ReadFile(*topicFile)
 	panicIfErr(err)
 	questions := strings.Split(string(topicContents), "\n")
+
+	logger := log.Default()
 
 	topics := make([]*cgp.Topic, 0)
 	c := cgp.NewClient(string(tokenBytes))
@@ -30,15 +33,18 @@ func main() {
 			Title:   eachTopic,
 			Content: resp.Choices[0].Message.Content,
 		})
+		logger.Printf("query topic %v done\n", eachTopic)
 	}
 
 	// renderer
+	logger.Println("start rendering")
 	renderer := cgp.NewMarpRenderer()
 	for _, eachTopic := range topics {
 		renderer.AddTopic(eachTopic)
 	}
 	err = renderer.RenderFile(*outputFile)
 	panicIfErr(err)
+	logger.Println("everything done, output saved to " + *outputFile)
 }
 
 func panicIfErr(err error) {
