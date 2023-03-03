@@ -11,35 +11,31 @@ import (
 )
 
 func main() {
+	// cmd parse
 	tokenFile := flag.String("token", "./token.txt", "token file path")
 	topicFile := flag.String("topic", "./topic.txt", "topic file path")
 	outputFile := flag.String("output", "./output.html", "out path")
 	rendererType := flag.String("renderer", cgp.RendererRemark, "renderer type")
 	rendererBin := flag.String("rendererBin", "", "binary file for renderer")
+	clientType := flag.String("client", cgp.ClientGpt35, "gpt client type")
 	flag.Parse()
 
+	logger := log.Default()
+
+	// prepare
 	tokenBytes, err := os.ReadFile(*tokenFile)
 	panicIfErr(err)
 	topicContents, err := os.ReadFile(*topicFile)
 	panicIfErr(err)
 	questions := strings.Split(string(topicContents), "\n")
 
-	logger := log.Default()
-
-	topics := make([]*cgp.Topic, 0)
-	c := cgp.NewClient(string(tokenBytes))
-	for _, eachTopic := range questions {
-		resp, err := c.AskTopic(eachTopic)
-		panicIfErr(err)
-		topics = append(topics, &cgp.Topic{
-			Title:   eachTopic,
-			Content: resp.Choices[0].Message.Content,
-		})
-		logger.Printf("query topic %v done\n", eachTopic)
+	// init client
+	c := cgp.GetClient(*clientType)
+	if c == nil {
+		panic(fmt.Errorf("no client named: %v", *clientType))
 	}
-
-	// renderer
-	logger.Println("start rendering")
+	c.SetToken(string(tokenBytes))
+	// init renderer
 	renderer := cgp.GetRenderer(*rendererType)
 	if renderer == nil {
 		panic(fmt.Errorf("no renderer named: %v", *rendererType))
@@ -48,6 +44,17 @@ func main() {
 		logger.Printf("set renderer bin: %v\n", *rendererBin)
 		renderer.SetBinPath(*rendererBin)
 	}
+
+	// fill topics
+	topics := make([]*cgp.Topic, 0)
+	for _, eachTopic := range questions {
+		resp, err := c.FillTopic(eachTopic)
+		panicIfErr(err)
+		topics = append(topics, resp)
+	}
+
+	// renderer
+	logger.Println("start rendering")
 	for _, eachTopic := range topics {
 		renderer.AddTopic(eachTopic)
 	}
