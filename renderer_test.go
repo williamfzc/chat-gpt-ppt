@@ -1,25 +1,18 @@
 package chat_gpt_ppt
 
 import (
-	"os"
 	"testing"
 
-	"github.com/williamfzc/chat-gpt-ppt/assets"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestRender(t *testing.T) {
-	renderer := NewMarpRenderer()
-	tmpF, err := os.CreateTemp(os.TempDir(), "tmpMarp*")
-	if err != nil {
-		panic(err)
-	}
-	defer os.Remove(tmpF.Name())
-	_ = os.WriteFile(tmpF.Name(), assets.Static, 0755)
-	renderer.SetBinPath(tmpF.Name())
-
-	renderer.AddTopic(&Topic{
+func TestRemark(t *testing.T) {
+	r := GetRenderer(RendererRemark)
+	assert.NotNil(t, r)
+	r.AddTopic(&Topic{
 		Title:   "title",
 		Content: "content",
 	})
-	err = renderer.RenderFile("ok.html")
+	err := r.RenderFile("ok.html")
+	assert.Nil(t, err)
 }

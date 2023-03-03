@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -13,6 +14,8 @@ func main() {
 	tokenFile := flag.String("token", "./token.txt", "token file path")
 	topicFile := flag.String("topic", "./topic.txt", "topic file path")
 	outputFile := flag.String("output", "./output.html", "out path")
+	rendererType := flag.String("renderer", cgp.RendererRemark, "renderer type")
+	rendererBin := flag.String("rendererBin", "", "binary file for renderer")
 	flag.Parse()
 
 	tokenBytes, err := os.ReadFile(*tokenFile)
@@ -37,8 +40,14 @@ func main() {
 
 	// renderer
 	logger.Println("start rendering")
-
-	renderer := cgp.NewRemarkRenderer()
+	renderer := cgp.GetRenderer(*rendererType)
+	if renderer == nil {
+		panic(fmt.Errorf("no renderer named: %v", *rendererType))
+	}
+	if *rendererBin != "" {
+		logger.Printf("set renderer bin: %v\n", *rendererBin)
+		renderer.SetBinPath(*rendererBin)
+	}
 	for _, eachTopic := range topics {
 		renderer.AddTopic(eachTopic)
 	}
