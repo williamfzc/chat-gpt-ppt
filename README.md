@@ -27,6 +27,10 @@ With multi languages support:
 
 ![](./doc/sample-chi.png)
 
+Or different render engine:
+
+![](./doc/sample-remark.png)
+
 ## Usage
 
 You can download prebuild binaries from [release page](https://github.com/williamfzc/chat-gpt-ppt/releases).
@@ -36,9 +40,31 @@ You can download prebuild binaries from [release page](https://github.com/willia
 3. Add your token to `token.txt`
 4. run `./cgp`
 
-Everything done.
+Everything done. You can get some help about command line arguments with `cgp --help`. 
+
+```bash
+$ ./cgp_macos --help
+Usage of ./cgp_macos:
+  -client string
+        gpt client type (default "GPT35")
+  -output string
+        out path (default "./output.html")
+  -renderer string
+        renderer type (default "REMARK")
+  -rendererBin string
+        binary file for renderer
+  -token string
+        token file path (default "./token.txt")
+  -topic string
+        topic file path (default "./topic.txt")
+```
 
 ## Contribution
+
+This project consists of two pluggable parts:
+
+- Client: Send topics to GPT and get their responses
+- Renderer: Build slides from these pairs
 
 Feel free to send us PR/issues.
 
