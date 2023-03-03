@@ -7,8 +7,6 @@ import (
 	"strings"
 
 	cgp "github.com/williamfzc/chat-gpt-ppt"
-	"github.com/williamfzc/chat-gpt-ppt/assets"
-	_ "github.com/williamfzc/chat-gpt-ppt/assets"
 )
 
 func main() {
@@ -40,13 +38,7 @@ func main() {
 	// renderer
 	logger.Println("start rendering")
 
-	renderer := cgp.NewMarpRenderer()
-	tmpF, err := os.CreateTemp(os.TempDir(), "tmpMarp*")
-	panicIfErr(err)
-	defer os.Remove(tmpF.Name())
-	_ = os.WriteFile(tmpF.Name(), assets.Static, 0755)
-	renderer.SetBinPath(tmpF.Name())
-
+	renderer := cgp.NewRemarkRenderer()
 	for _, eachTopic := range topics {
 		renderer.AddTopic(eachTopic)
 	}
