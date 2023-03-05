@@ -61,10 +61,20 @@ Usage of ./cgp_macos:
 
 ## Contribution
 
+Thanks for your interest. This project is really simple to hack.
+
 This project consists of two pluggable parts:
 
 - Client: Send topics to GPT and get their responses
 - Renderer: Build slides from these pairs
+
+If you want to make some changes:
+
+- git clone
+- change code
+- run `make` to build a binary file (Go installation required)
+- check
+- push to repo and send a PR
 
 Feel free to send us PR/issues.
 

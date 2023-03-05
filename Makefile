@@ -4,7 +4,6 @@ WORKDIR = $(PWD)
 # Go parameters
 GOCMD = go
 GOTEST = $(GOCMD) test
-MARP_VER = v2.4.0
 
 build_linux:
 	GOOS=linux GOARCH=amd64 ${GOCMD} build -o cgp_linux ./cmd/cgp
