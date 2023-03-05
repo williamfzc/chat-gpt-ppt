@@ -2,8 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -20,8 +18,6 @@ func main() {
 	clientType := flag.String("client", cgp.ClientGpt35, "gpt client type")
 	flag.Parse()
 
-	logger := log.Default()
-
 	// prepare
 	tokenBytes, err := os.ReadFile(*tokenFile)
 	panicIfErr(err)
@@ -29,38 +25,16 @@ func main() {
 	panicIfErr(err)
 	questions := strings.Split(string(topicContents), "\n")
 
-	// init client
-	c := cgp.GetClient(*clientType)
-	if c == nil {
-		panic(fmt.Errorf("no client named: %v", *clientType))
+	config := cgp.ApiConfig{
+		Token:        string(tokenBytes),
+		Topics:       questions,
+		OutputFile:   *outputFile,
+		RendererType: *rendererType,
+		RendererBin:  *rendererBin,
+		ClientType:   *clientType,
 	}
-	c.SetToken(string(tokenBytes))
-	// init renderer
-	renderer := cgp.GetRenderer(*rendererType)
-	if renderer == nil {
-		panic(fmt.Errorf("no renderer named: %v", *rendererType))
-	}
-	if *rendererBin != "" {
-		logger.Printf("set renderer bin: %v\n", *rendererBin)
-		renderer.SetBinPath(*rendererBin)
-	}
-
-	// fill topics
-	topics := make([]*cgp.Topic, 0)
-	for _, eachTopic := range questions {
-		resp, err := c.FillTopic(eachTopic)
-		panicIfErr(err)
-		topics = append(topics, resp)
-	}
-
-	// renderer
-	logger.Println("start rendering")
-	for _, eachTopic := range topics {
-		renderer.AddTopic(eachTopic)
-	}
-	err = renderer.RenderFile(*outputFile)
+	err = cgp.GenAndRender(config)
 	panicIfErr(err)
-	logger.Println("everything done, output saved to " + *outputFile)
 }
 
 func panicIfErr(err error) {
