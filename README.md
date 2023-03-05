@@ -37,7 +37,7 @@ You can download prebuild binaries from [release page](https://github.com/willia
 
 1. Download a executable binary
 2. Add your topics to `topic.txt`
-3. Add your token to `token.txt`
+3. Add your token (official openai api key, with no extra white space, no empty line) to `token.txt`
 4. run `./cgp`
 
 Everything done. You can get some help about command line arguments with `cgp --help`. 
