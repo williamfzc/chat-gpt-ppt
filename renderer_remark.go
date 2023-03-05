@@ -2,6 +2,7 @@ package chat_gpt_ppt
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"strings"
 )
@@ -57,14 +58,11 @@ func (r *RemarkRenderer) AddTopic(topic *Topic) {
 }
 
 func (r *RemarkRenderer) RenderFile(outputPath string) error {
-	parts := make([]string, 0)
-	for _, each := range r.Topics {
-		parts = append(parts, each.ToMarkdown())
+	output, err := r.RenderString()
+	if err != nil {
+		return err
 	}
-	final := strings.Join(parts, "\n---\n")
-
-	outputContent := fmt.Sprintf(RemarkTemplate, final)
-	err := os.WriteFile(outputPath, []byte(outputContent), 0644)
+	err = os.WriteFile(outputPath, []byte(output), fs.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -72,4 +70,14 @@ func (r *RemarkRenderer) RenderFile(outputPath string) error {
 }
 
 func (r *RemarkRenderer) SetBinPath(_ string) {
+}
+
+func (r *RemarkRenderer) RenderString() (string, error) {
+	parts := make([]string, 0)
+	for _, each := range r.Topics {
+		parts = append(parts, each.ToMarkdown())
+	}
+	final := strings.Join(parts, "\n---\n")
+	outputContent := fmt.Sprintf(RemarkTemplate, final)
+	return outputContent, nil
 }

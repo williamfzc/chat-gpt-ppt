@@ -1,6 +1,7 @@
 package chat_gpt_ppt
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -50,4 +51,8 @@ func (m *MarpRenderer) RenderFile(outputPath string) error {
 		return err
 	}
 	return nil
+}
+
+func (m *MarpRenderer) RenderString() (string, error) {
+	return "", fmt.Errorf("not supported")
 }

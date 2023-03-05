@@ -26,6 +26,7 @@ const (
 
 type Renderer interface {
 	AddTopic(*Topic)
+	RenderString() (string, error)
 	RenderFile(outputPath string) error
 	SetBinPath(path string)
 }
