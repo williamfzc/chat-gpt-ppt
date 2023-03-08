@@ -10,8 +10,8 @@ build_linux:
 	zip cgp_linux.zip cgp_linux
 
 build_windows:
-	GOOS=windows GOARCH=amd64 ${GOCMD} build -o cgp_windows ./cmd/cgp
-	zip cgp_windows.zip cgp_windows
+	GOOS=windows GOARCH=amd64 ${GOCMD} build -o cgp_windows.exe ./cmd/cgp
+	zip cgp_windows.zip cgp_windows.exe
 
 build_macos:
 	GOOS=darwin GOARCH=amd64 ${GOCMD} build -o cgp_macos ./cmd/cgp
