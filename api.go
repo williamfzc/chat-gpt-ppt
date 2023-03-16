@@ -47,7 +47,15 @@ func GenAndRenderString(config ApiConfig) (string, error) {
 		renderer.SetBinPath(config.RendererBin)
 	}
 
-	// fill topics
+	// prepare
+	logger.Println("start preparing ...")
+	err := c.Prepare(config.Topics)
+	if err != nil {
+		return "", err
+	}
+
+	// fill
+	logger.Println("start generating ...")
 	topics := make([]*Topic, 0)
 	for _, eachTopic := range config.Topics {
 		resp, err := c.FillTopic(eachTopic)

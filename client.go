@@ -2,6 +2,7 @@ package chat_gpt_ppt
 
 type Client interface {
 	SetToken(token string)
+	Prepare(topics []string) error
 	FillTopic(topic string) (*Topic, error)
 }
 
