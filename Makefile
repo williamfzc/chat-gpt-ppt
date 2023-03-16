@@ -5,6 +5,9 @@ WORKDIR = $(PWD)
 GOCMD = go
 GOTEST = $(GOCMD) test
 
+default:
+	go build ./cmd/cgp
+
 build_linux:
 	GOOS=linux GOARCH=amd64 ${GOCMD} build -o cgp_linux ./cmd/cgp
 	zip cgp_linux.zip cgp_linux
