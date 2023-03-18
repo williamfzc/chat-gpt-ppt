@@ -59,6 +59,29 @@ Usage of ./cgp_macos:
         topic file path (default "./topic.txt")
 ```
 
+## Interactive mode
+
+`-i` flag allows you checking and correcting generated contents one by one.
+
+```bash
+@williamfzc ➜ /workspaces/chat-gpt-ppt (main) $ ./cgp -i
+start preparing ...
+start generating ...
+2023/03/18 08:17:23 topic what's OpenAI? done 
+Here is your response, type any key to continue, type 'n' to edit 
+# what's OpenAI?
+
+
+
+- OpenAI is an artificial intelligence research lab.
+- It was founded by a group of well-known tech industry figures in 2015 as a non-profit organization.
+- OpenAI's mission is to ensure that AGI (Artificial General Intelligence) benefits all of humanity.
+- Their research covers many areas of AI, such as reinforcement learning, natural language processing, computer vision, and robotics.
+- OpenAI also develops and releases several powerful AI-based tools, including GPT-3, which has revolutionized natural language processing.
+
+>>>  
+```
+
 ## Contribution
 
 Thanks for your interest. This project is really simple to hack.
