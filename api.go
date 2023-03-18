@@ -14,6 +14,7 @@ type ApiConfig struct {
 	RendererType RendererType `json:"rendererType"`
 	RendererBin  string       `json:"rendererBin"`
 	ClientType   ClientType   `json:"clientType"`
+	Interactive  bool         `json:"interactive"`
 }
 
 var logger = log.Default()
@@ -46,7 +47,7 @@ func GenAndRenderString(shellContext *ishell.Context, config ApiConfig) (string,
 	shellContext.Println("start generating ...")
 	topics := make([]*Topic, 0)
 	for _, eachTopic := range config.Topics {
-		finalTopic, err := getFinalTopic(shellContext, c, eachTopic)
+		finalTopic, err := getFinalTopic(shellContext, c, eachTopic, config.Interactive)
 		if err != nil {
 			return "", err
 		}
@@ -66,10 +67,14 @@ func GenAndRenderString(shellContext *ishell.Context, config ApiConfig) (string,
 	return str, nil
 }
 
-func getFinalTopic(shellContext *ishell.Context, c Client, eachTopic string) (*Topic, error) {
+func getFinalTopic(shellContext *ishell.Context, c Client, eachTopic string, needConfirm bool) (*Topic, error) {
 	resp, err := c.FillTopic(eachTopic)
 	if err != nil {
 		return nil, err
+	}
+
+	if !needConfirm {
+		return resp, nil
 	}
 
 	shellContext.Println("Here is your response, type any key to continue, type 'n' to edit", resp.ToMarkdown())
@@ -79,6 +84,6 @@ func getFinalTopic(shellContext *ishell.Context, c Client, eachTopic string) (*T
 	} else {
 		shellContext.Println("You can enter a new topic to regenerate this page.")
 		newTopic := shellContext.ReadLine()
-		return getFinalTopic(shellContext, c, newTopic)
+		return getFinalTopic(shellContext, c, newTopic, needConfirm)
 	}
 }

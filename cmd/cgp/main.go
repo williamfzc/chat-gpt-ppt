@@ -18,6 +18,7 @@ func main() {
 	rendererType := flag.String("renderer", cgp.RendererRemark, "renderer type")
 	rendererBin := flag.String("rendererBin", "", "binary file for renderer")
 	clientType := flag.String("client", cgp.ClientGpt35, "gpt client type")
+	interactive := flag.Bool("i", false, "interactive mode")
 	flag.Parse()
 
 	// prepare
@@ -34,6 +35,7 @@ func main() {
 		RendererType: *rendererType,
 		RendererBin:  *rendererBin,
 		ClientType:   *clientType,
+		Interactive:  *interactive,
 	}
 
 	shell := ishell.New()
