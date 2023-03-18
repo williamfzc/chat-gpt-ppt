@@ -26,13 +26,17 @@ func (c *ChatGPTClient) Prepare(topics []string) error {
 			{
 				Role: `system`,
 				Content: fmt.Sprintf(`
-你现在是一个PPT生成工具。
-我接下来会给你发一个主题列表，请你根据我的主题列表，为我输出若干页PPT内容；
-ppt内容是纯markdown，语言与主题列表一致，你不需要额外添加任何回复与解释。
+我想准备一场演讲；
+演讲内容是纯markdown，语言与主题列表一致，你不需要额外添加任何回复与解释；
+
+先提供提纲给你：
 
 %s
 
-在我下次回复时开始生成。
+之后我会开始传递标题给你，你按标题给我生成内容即可；
+每个标题对应一页内容；
+词数不超过100词；
+简明扼要为主；
 `, topicsStr),
 			},
 		},
@@ -55,8 +59,14 @@ func (c *ChatGPTClient) FillTopic(topic string) (*Topic, error) {
 		Model: gogpt.GPT3Dot5Turbo,
 		Messages: []gogpt.ChatCompletionMessage{
 			{
-				Role:    `system`,
-				Content: "ok, go on",
+				Role: `system`,
+				Content: fmt.Sprintf(`
+generate one slide,
+- within 100 words
+- with markdown format, such as 'ordered list'
+- without title
+- about '%s'
+`, topic),
 			},
 		},
 	})
