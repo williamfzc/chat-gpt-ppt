@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"io/fs"
 	"os"
 	"strings"
 
+	"github.com/abiosoft/ishell/v2"
 	cgp "github.com/williamfzc/chat-gpt-ppt"
 )
 
@@ -33,7 +35,20 @@ func main() {
 		RendererBin:  *rendererBin,
 		ClientType:   *clientType,
 	}
-	err = cgp.GenAndRender(config)
+
+	shell := ishell.New()
+	cmd := &ishell.Cmd{
+		Name: "gen",
+		Help: "gen",
+		Func: func(c *ishell.Context) {
+			content, err := cgp.GenAndRenderString(c, config)
+			panicIfErr(err)
+			err = os.WriteFile(config.OutputFile, []byte(content), fs.ModePerm)
+			panicIfErr(err)
+		},
+	}
+	shell.AddCmd(cmd)
+	err = shell.Process("gen")
 	panicIfErr(err)
 }
 

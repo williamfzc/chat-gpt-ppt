@@ -2,9 +2,9 @@ package chat_gpt_ppt
 
 import (
 	"fmt"
-	"io/fs"
 	"log"
-	"os"
+
+	"github.com/abiosoft/ishell/v2"
 )
 
 type ApiConfig struct {
@@ -18,19 +18,7 @@ type ApiConfig struct {
 
 var logger = log.Default()
 
-func GenAndRender(config ApiConfig) error {
-	content, err := GenAndRenderString(config)
-	if err != nil {
-		return err
-	}
-	err = os.WriteFile(config.OutputFile, []byte(content), fs.ModePerm)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GenAndRenderString(config ApiConfig) (string, error) {
+func GenAndRenderString(shellContext *ishell.Context, config ApiConfig) (string, error) {
 	// init client
 	c := GetClient(config.ClientType)
 	if c == nil {
@@ -43,30 +31,31 @@ func GenAndRenderString(config ApiConfig) (string, error) {
 		return "", fmt.Errorf("no renderer named: %v", config.RendererType)
 	}
 	if config.RendererBin != "" {
-		logger.Printf("set renderer bin: %v\n", config.RendererBin)
+		shellContext.Printf("set renderer bin: %v\n", config.RendererBin)
 		renderer.SetBinPath(config.RendererBin)
 	}
 
 	// prepare
-	logger.Println("start preparing ...")
+	shellContext.Println("start preparing ...")
 	err := c.Prepare(config.Topics)
 	if err != nil {
 		return "", err
 	}
 
 	// fill
-	logger.Println("start generating ...")
+	shellContext.Println("start generating ...")
 	topics := make([]*Topic, 0)
 	for _, eachTopic := range config.Topics {
-		resp, err := c.FillTopic(eachTopic)
+		finalTopic, err := getFinalTopic(shellContext, c, eachTopic)
 		if err != nil {
 			return "", err
 		}
-		topics = append(topics, resp)
+		topics = append(topics, finalTopic)
 	}
 
 	// renderer
-	logger.Println("start rendering")
+	shellContext.Println("start rendering ...")
+	shellContext.Stop()
 	for _, eachTopic := range topics {
 		renderer.AddTopic(eachTopic)
 	}
@@ -75,4 +64,21 @@ func GenAndRenderString(config ApiConfig) (string, error) {
 		return "", err
 	}
 	return str, nil
+}
+
+func getFinalTopic(shellContext *ishell.Context, c Client, eachTopic string) (*Topic, error) {
+	resp, err := c.FillTopic(eachTopic)
+	if err != nil {
+		return nil, err
+	}
+
+	shellContext.Println("Here is your response, type any key to continue, type 'n' to edit", resp.ToMarkdown())
+	ok := shellContext.ReadLine()
+	if ok != "n" {
+		return resp, nil
+	} else {
+		shellContext.Println("You can enter a new topic to regenerate this page.")
+		newTopic := shellContext.ReadLine()
+		return getFinalTopic(shellContext, c, newTopic)
+	}
 }
