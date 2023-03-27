@@ -29,7 +29,7 @@ const RemarkTemplate = `
   <body>
     <textarea id="source">
 
-class: center, middle
+class: center
 
 %s
 
