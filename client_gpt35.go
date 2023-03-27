@@ -26,17 +26,20 @@ func (c *ChatGPTClient) Prepare(topics []string) error {
 			{
 				Role: `system`,
 				Content: fmt.Sprintf(`
-我想准备一场演讲；
-演讲内容是纯markdown，语言与主题列表一致，你不需要额外添加任何回复与解释；
+Here is a prompt:
 
-先提供提纲给你：
+I would like to prepare a speech in pure markdown format, 
+with language and topic consistent with the outline provided. 
+You do not need to add any additional replies or explanations.
+
+Here is the global outline:
 
 %s
 
-之后我会开始传递标题给你，你按标题给我生成内容即可；
-每个标题对应一页内容；
-词数不超过100词；
-简明扼要为主；
+Then, I will begin to provide you with titles, 
+and you will generate content for each page accordingly. 
+Each title corresponds to one page of content, with a maximum of 100 words per page. 
+Conciseness is key.
 `, topicsStr),
 			},
 		},
