@@ -3,6 +3,7 @@ package chat_gpt_ppt
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/abiosoft/ishell/v2"
 )
@@ -25,7 +26,11 @@ func GenAndRenderString(shellContext *ishell.Context, config ApiConfig) (string,
 	if c == nil {
 		return "", fmt.Errorf("no client named: %v", config.ClientType)
 	}
-	c.SetToken(config.Token)
+
+	// https://github.com/williamfzc/chat-gpt-ppt/issues/12
+	safeToken := strings.TrimSpace(config.Token)
+	c.SetToken(safeToken)
+
 	// init renderer
 	renderer := GetRenderer(config.RendererType)
 	if renderer == nil {
